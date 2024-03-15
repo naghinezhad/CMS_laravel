@@ -8,6 +8,6 @@
     <title> کوئرا </title>
 </head>
 <body>
-    {{ trans('admin.dashboard') }}
+// TODO
 </body>
 </html>
