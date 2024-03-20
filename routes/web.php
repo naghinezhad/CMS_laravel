@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 use Modules\Admin\app\Http\Controllers\AdminUserController;
 use Modules\Admin\app\Http\Controllers\AdminPostController;
@@ -14,6 +15,10 @@ use Modules\Admin\app\Http\Controllers\AdminPostController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/panel', 'AdminController@index')->name('admin.panel');
