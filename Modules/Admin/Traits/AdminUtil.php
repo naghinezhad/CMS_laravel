@@ -1,39 +1,38 @@
 <?php
 
-namespace App\Traits\Admin;
+namespace Modules\Admin\Traits;
+
+use Carbon\Carbon;
 
 trait AdminUtil
 {
-    public function uploadImages($file, $path)
+    function uploadImages($file, $path)
     {
-        $filename = time() . '_' . $file->getClientOriginalName();
-        $year = date('Y');
-        $destinationPath = public_path($path . '/' . $year);
-        
-        if (!file_exists($destinationPath)) {
-            mkdir($destinationPath, 0777, true);
+        $date = Carbon::now();
+        $filePath = $path . "/$date->year";
+        $filename = $date->timestamp . '_' . $file->getClientOriginalName();
+        return $file->storeAs(
+            $filePath,
+            $filename,
+            'public'
+        );
+    }
+
+    function formatBytes($bytes, $precision = 2)
+    {
+        $units = array('B', 'KB', 'MB', 'GB', 'TB');
+        $i = 0;
+        while ($bytes >= 1024) {
+            $bytes /= 1024;
+            $i++;
         }
-        
-        $file->move($destinationPath, $filename);
-        
-        return $path . '/' . $year . '/' . $filename;
+        return round($bytes, $precision) . ' ' . $units[$i];
     }
-    
-    public function createSlug($title, $separator = '-')
+
+    function createSlug($str, $char = '-')
     {
-        $slug = trim($title);
-        $slug = strtolower($slug);
-        $slug = preg_replace('/[^a-z0-9' . preg_quote($separator, '/') . ']+/', $separator, $slug);
-        $slug = trim($slug, $separator);
-        
-        return $slug;
-    }
-    
-    public function formatBytes($bytes, $decimals = 2)
-    {
-        $size = ['B', 'KB', 'MB', 'GB', 'TB'];
-        $factor = floor((strlen($bytes) - 1) / 3);
-        $formatted = sprintf("%.{$decimals}f", $bytes / pow(1024, $factor));
-        return $formatted . ' ' . @$size[$factor];
+        $str = preg_replace('/[^A-Za-z0-9\x{0600}-\x{06FF}-]+/u', $char, $str);
+        $str = trim($str, $char);
+        return $str;
     }
 }
