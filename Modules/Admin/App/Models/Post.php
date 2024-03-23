@@ -13,10 +13,34 @@ class Post extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
-    
+    protected $fillable = [
+        'user_id',
+        'title',
+        'slug',
+        'description',
+        'body',
+        'images',
+        'view',
+        'approved',
+    ];
+
     protected static function newFactory(): PostFactory
     {
         //return PostFactory::new();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function path()
+    {
+        return '/posts/' . $this->slug;
+    }
+
+    public function isApproved()
+    {
+        return (bool) $this->approved;
     }
 }
