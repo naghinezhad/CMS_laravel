@@ -48,4 +48,14 @@ class Post extends Model
     {
         return $this->morphToMany(Category::class, 'catable');
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'tagable');
+    }
 }
