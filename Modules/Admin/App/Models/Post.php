@@ -43,4 +43,9 @@ class Post extends Model
     {
         return (bool) $this->approved;
     }
+
+    public function categories()
+    {
+        return $this->morphToMany(Category::class, 'catable');
+    }
 }
